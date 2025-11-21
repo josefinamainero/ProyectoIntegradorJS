@@ -1,9 +1,9 @@
 :root {
-  --bg: #0f172a;
-  --bg-soft: #111827;
+  --bg: #0c1422;
+  --bg-soft: #1a2235;
   --bg-softer: #020617;
-  --fg: #f9fafb;
-  --fg-muted: #9ca3af;
+  --fg: #ffffff;
+  --fg-muted: #c2c9d4;
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.12);
   --danger: #fb7185;
@@ -590,3 +590,4 @@ tbody tr:hover {
     border-color: #10b981;
 
 }
+
