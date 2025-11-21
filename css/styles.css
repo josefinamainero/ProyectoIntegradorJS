@@ -58,8 +58,6 @@ body {
   justify-content: space-between;
   gap: 16px;
   box-shadow: var(--shadow-soft);
-  position: sticky;
-  top: 16px;
   z-index: 10;
   backdrop-filter: blur(18px);
 }
@@ -590,4 +588,5 @@ tbody tr:hover {
     background: #10b981; 
     color: var(--fg);
     border-color: #10b981;
+
 }
