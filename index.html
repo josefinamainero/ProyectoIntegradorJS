@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Planificador de Actividades de Estudio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__titles">
+        <h1>Planificador de Actividades de Estudio</h1>
+        <p class="header__subtitle">
+          Proyecto integrador – Practicá JavaScript y manipulación del DOM
+        </p>
+      </div>
+
+      <div class="header__actions">
+        <button id="btnToggleTheme" class="btn btn--ghost">
+          🌓 Tema claro/oscuro
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel--left">
+        <h2 class="panel__title">Nueva actividad</h2>
+        <p class="panel__description">
+          Completá el formulario y después usá JavaScript para agregar la
+          actividad a la lista, validarla, calcular estadísticas, etc.
+        </p>
+
+        <form id="activityForm" class="form">
+          <div class="form__group">
+            <label for="title">Título de la actividad</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Ej: Repasar funciones de JavaScript"
+              required
+            />
+          </div>
+
+          <div class="form__group">
+            <label for="subject">Materia / curso</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Ej: JavaScript – CapacitarTec"
+            />
+          </div>
+
+          <div class="form__group">
+            <label for="type">Tipo de actividad</label>
+            <select id="type" name="type">
+              <option value="lectura">Lectura teórica</option>
+              <option value="practica">Práctica / ejercicios</option>
+              <option value="proyecto">Proyecto / integrador</option>
+              <option value="evaluacion">Evaluación / parcial</option>
+            </select>
+          </div>
+
+          <div class="form__group form__group--inline">
+            <div>
+              <label for="difficulty">Dificultad</label>
+              <select id="difficulty" name="difficulty">
+                <option value="facil">Fácil</option>
+                <option value="media">Media</option>
+                <option value="dificil">Difícil</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="estimatedTime">Tiempo estimado (hs)</label>
+              <input
+                type="number"
+                id="estimatedTime"
+                name="estimatedTime"
+                min="0"
+                step="0.5"
+                placeholder="1.5"
+              />
+            </div>
+          </div>
+
+          <div class="form__group form__group--inline">
+            <div>
+              <span class="form__label">Prioridad</span>
+              <div class="form__options">
+                <label class="chip">
+                  <input type="radio" name="priority" value="baja" checked />
+                  <span>Baja</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="priority" value="media" />
+                  <span>Media</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="priority" value="alta" />
+                  <span>Alta</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label for="deadline">Fecha límite</label>
+              <input type="date" id="deadline" name="deadline" />
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label for="notes">Notas / detalle</label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows="3"
+              placeholder="Ej: Priorizar ejercicios de arrays, bucles y DOM."
+            ></textarea>
+          </div>
+
+          <div class="form__group form__group--inline form__group--between">
+            <label class="form__checkbox">
+              <input type="checkbox" id="isImportant" name="isImportant" />
+              <span>Marcar como actividad importante</span>
+            </label>
+
+            <button type="submit" class="btn btn--primary">
+              + Agregar actividad
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <section class="panel panel--right">
+        <div class="panel__header">
+          <h2 class="panel__title">Resumen del estudio</h2>
+        </div>
+
+        <section class="stats">
+          <article class="stat-card">
+            <span class="stat-card__label">Total de actividades</span>
+            <span id="statTotal" class="stat-card__value">0</span>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-card__label">Completadas</span>
+            <span id="statCompleted" class="stat-card__value">0</span>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-card__label">Pendientes</span>
+            <span id="statPending" class="stat-card__value">0</span>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-card__label">Horas estimadas</span>
+            <span id="statHours" class="stat-card__value">0</span>
+          </article>
+        </section>
+
+        <section class="toolbar">
+          <div class="toolbar__group">
+            <label for="search" class="toolbar__label">Buscar</label>
+            <input
+              type="search"
+              id="search"
+              placeholder="Filtrar por título o materia..."
+            />
+          </div>
+
+          <div class="toolbar__group">
+            <span class="toolbar__label">Filtrar por estado</span>
+            <div class="toolbar__buttons">
+              <button
+                class="btn btn--ghost btn-filter is-active"
+                data-filter="todas"
+              >
+                Todas
+              </button>
+              <button
+                class="btn btn--ghost btn-filter"
+                data-filter="pendientes"
+              >
+                Pendientes
+              </button>
+              <button
+                class="btn btn--ghost btn-filter"
+                data-filter="completadas"
+              >
+                Completadas
+              </button>
+            </div>
+          </div>
+
+          <div class="toolbar__group">
+            <label for="sort" class="toolbar__label">Ordenar por</label>
+            <select id="sort">
+              <option value="fecha">Fecha límite</option>
+              <option value="prioridad">Prioridad</option>
+              <option value="titulo">Título</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="table-panel">
+          <div class="table-panel__header">
+            <h3>Lista de actividades</h3>
+            <small>
+              Usá JavaScript para agregar filas, marcarlas como completadas,
+              borrarlas, etc.
+            </small>
+          </div>
+
+          <p id="emptyState" class="empty-state">
+            No hay actividades cargadas. Agregá la primera usando el formulario.
+          </p>
+
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>✔</th>
+                  <th>Título</th>
+                  <th>Materia</th>
+                  <th>Tipo</th>
+                  <th>Prioridad</th>
+                  <th>Fecha límite</th>
+                  <th>Tiempo (hs)</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="activityTableBody">
+                </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="editModal" class="modal" aria-hidden="true">
+      <div class="modal__backdrop"></div>
+      <div class="modal__content" role="dialog" aria-modal="true">
+        <header class="modal__header">
+          <h2>Editar actividad</h2>
+          <button id="btnCloseModal" class="modal__close">&times;</button>
+        </header>
+
+        <form id="editForm" class="form modal__body">
+          <div class="form__group">
+            <label for="editTitle">Título</label>
+            <input type="text" id="editTitle" required />
+          </div>
+
+          <div class="form__group">
+            <label for="editSubject">Materia</label>
+            <input type="text" id="editSubject" />
+          </div>
+
+          <div class="form__group form__group--inline">
+            <div>
+              <label for="editType">Tipo</label>
+              <select id="editType">
+                <option value="lectura">Lectura teórica</option>
+                <option value="practica">Práctica / ejercicios</option>
+                <option value="proyecto">Proyecto</option>
+                <option value="evaluacion">Evaluación</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="editDeadline">Fecha límite</label>
+              <input type="date" id="editDeadline" />
+            </div>
+          </div>
+          
+          <footer class="modal__footer">
+            <button type="button" class="btn btn--ghost" id="btnCancelEdit">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn--primary">
+              Guardar cambios
+            </button>
+          </footer>
+        </form>
+      </div>
+    </div>
+
+    <template id="rowTemplate">
+      <tr data-id="" data-status="pendiente">
+        <td>
+          <input type="checkbox" class="row-complete" />
+        </td>
+        <td class="row-title"></td>
+        <td class="row-subject"></td>
+        <td class="row-type"></td>
+        <td>
+          <span class="badge badge--priority"></span>
+        </td>
+        <td class="row-deadline"></td>
+        <td class="row-time"></td>
+        <td class="row-actions">
+          <button class="btn-link btn-edit">Editar</button>
+          <button class="btn-link btn-delete">Eliminar</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
